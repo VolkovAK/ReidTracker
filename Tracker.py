@@ -1,17 +1,17 @@
 from scipy.optimize import linear_sum_assignment
 import numpy as np
 
-from Embeddings import EmbeddingDB
 from Track import Track, Detection
 
 
 
 class Tracker():
     def __init__(self,
-                max_iou_distance=0.8,
-                max_cosine_distance=0.4,
-                max_lost_counter=300,
-                adulthood_age=8):
+                 db=None
+                 max_iou_distance=0.8,
+                 max_cosine_distance=0.4,
+                 max_lost_counter=300,
+                 adulthood_age=8):
 
         self.tracks = []
         self.max_iou_distance = max_iou_distance
@@ -21,10 +21,9 @@ class Tracker():
 
         self.next_id = 1
         self.embeddings_db_neighbours = 5
-        self.db = EmbeddingDB.DB(database_dir=None, mode='cosine',
-                                 k_neighbors=self.embeddings_db_neighbours,
-                                 thresh=self.max_cosine_distance)
+        self.db = db
         self.match_function = None
+
 
 
     def update(self, detections):
