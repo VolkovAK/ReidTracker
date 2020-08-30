@@ -1,3 +1,14 @@
 numpy
 scipy
+Cython 
+h5py 
+Pillow 
+six 
+scipy 
+tb-nightly 
+yacs 
+gdown 
+flake8 
+yapf 
+isort
 faiss-cpu
