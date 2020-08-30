@@ -1,7 +1,7 @@
 from scipy.optimize import linear_sum_assignment
 import numpy as np
 
-from Track import Track, Detection
+from Track import Track, Detection, TrackStatus
 
 
 class Tracker():
@@ -21,7 +21,6 @@ class Tracker():
         self.next_id = 1
         self.embeddings_db_neighbours = 5
         self.db = db
-        self.match_function = None
 
 
 
@@ -30,14 +29,14 @@ class Tracker():
             assert len(features) == len(bboxes)
         detections = []
         for bbox, feature in zip(bboxes, features):
-            det = Detection(bbox, feature=feature)
+            det = Detection(bbox[:4], feature=feature)
             detections.append(det)
 
         for track in self.tracks:
             track.predict()
 
         matched, unmatched_tracks, unmatched_detections = \
-            self.match_function(self.tracks, detections)
+            self.feature_match(self.tracks, detections)
 
         for match in matched:
             self.tracks[match[0]].correct(self.db, detections[match[1]]) 

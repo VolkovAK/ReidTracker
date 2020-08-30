@@ -57,8 +57,8 @@ class ReidEmbedder():
     def embed(self, frame, bboxes):
         crops = []
         for bbox in bboxes:
-            p1 = [int(bbox.x-bbox.w/2), int(bbox.y-bbox.h/2)]
-            p2 = [int(bbox.x+bbox.w/2), int(bbox.y+bbox.h/2)]
+            p1 = [int(bbox[0]), int(bbox[1])]
+            p2 = [int(bbox[2]), int(bbox[3])]
             if p1[0] < 0: p1[0] = 0
             if p2[0] > frame.shape[1]: p2[0] = frame.shape[1]
             if p1[1] < 0: p1[1] = 0
@@ -71,8 +71,5 @@ class ReidEmbedder():
                 out = self.model(torch_imgs)
             embeddings = out.cpu().numpy() 
         return bboxes, embeddings, frame 
-
-
-
 
 
