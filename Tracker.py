@@ -4,7 +4,6 @@ import numpy as np
 from Track import Track, Detection
 
 
-
 class Tracker():
     def __init__(self,
                  db=None,
@@ -26,7 +25,14 @@ class Tracker():
 
 
 
-    def update(self, detections):
+    def update(self, bboxes, features=None):
+        if features is not None:
+            assert len(features) == len(bboxes)
+        detections = []
+        for bbox, feature in zip(bboxes, features):
+            det = Detection(bbox, feature=feature)
+            detections.append(det)
+
         for track in self.tracks:
             track.predict()
 
