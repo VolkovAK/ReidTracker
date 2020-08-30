@@ -14,19 +14,17 @@ from reid_utils.builder import build_model
 
 
 class ReidEmbedder():
-    def __init__(self):
-        weightPath = "/opt/models/reid300.pt"
-        configPath = "/opt/models/reid300.yaml"
+    def __init__(self, weights_path='./models/reid300.pt', config_path='./models/reid300.yaml'):
 
-        if not os.path.exists(configPath):
+        if not os.path.exists(config_path):
             raise ValueError("Invalid config path `" +
-                            os.path.abspath(configPath)+"`")
-        if not os.path.exists(weightPath):
+                            os.path.abspath(config_path)+"`")
+        if not os.path.exists(weights_path):
             raise ValueError("Invalid weight path `" +
-                            os.path.abspath(weightPath)+"`")
+                            os.path.abspath(weights_path)+"`")
 
         cfg = get_default_config()
-        cfg.merge_from_file(configPath)
+        cfg.merge_from_file(config_path)
 
         self.model = build_model(
             name=cfg.model.name,
@@ -38,7 +36,7 @@ class ReidEmbedder():
             input_size=(256, 128),
             IN_first=cfg.model.IN_first,
         )
-        load_pretrained_weights(self.model, weightPath)
+        load_pretrained_weights(self.model, weights_path)
         self.model = self.model.cuda()
         self.model.eval()
         self.preprocess_mean = (torch.tensor([0.485, 0.456, 0.406]) * 255.0).cuda()

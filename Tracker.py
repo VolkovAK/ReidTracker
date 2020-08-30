@@ -7,7 +7,7 @@ from Track import Track, Detection
 
 class Tracker():
     def __init__(self,
-                 db=None
+                 db=None,
                  max_iou_distance=0.8,
                  max_cosine_distance=0.4,
                  max_lost_counter=300,
