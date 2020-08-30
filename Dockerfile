@@ -1,4 +1,8 @@
+# Build container:
+# $ docker build -t reidtracker .
 
+# Run it (nvidia runtime is required):
+# $ docker run --runtime=nvidia -it --rm --name reid -e DISPLAY=:0 -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix -i reidtracker:latest /bin/bash
 
 FROM nvidia/cuda:10.2-cudnn7-devel-ubuntu18.04
 
