@@ -1,6 +1,5 @@
 import numpy as np
-
-
+import time
 
 
 class Detection():
@@ -53,11 +52,20 @@ class Track():
         self.max_lost_counter = max_lost_counter
         self.status = TrackStatus.tentative
 
+        self.lifetime_start = time.time()
+        self.lifetime = 0
+        self.lifetime_last = 0
+
 
     def to_tlwh(self):
         tlwh = self.current_state.copy()
         tlwh[:2] -= tlwh[2:]//2
         return tlwh
+
+    def get_lifetime_str(self):
+        minutes = int(self.lifetime // 60)
+        seconds = int(self.lifetime % minutes)
+        return '{:02}:{:02}'.format(minutes, seconds)
 
     def copy_position_state(self, copy_from):
         self.current_state = copy_from.current_state
@@ -74,6 +82,7 @@ class Track():
         # x = x + vx, ...
         self.current_state = self.current_state + self.velocity_state
         self.lost_counter += 1
+        self.lifetime = time.time() - self.lifetime_start
 
 
     def correct(self, embeddings_db, detection):
@@ -118,6 +127,8 @@ class Track():
         self.age += 1
         if self.status == TrackStatus.tentative and self.age >= self.adulthood_age:
             self.status = TrackStatus.confirmed
+
+        self.lifetime_last = time.time()
 
 
     def mark_missed(self):
