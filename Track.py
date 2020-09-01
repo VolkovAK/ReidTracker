@@ -115,7 +115,7 @@ class Track():
         if self.status == TrackStatus.tentative:
             self.features[self.available_features] = detection.feature
             self.available_features += 1
-	if self.status == TrackStatus.confirmed:
+        if self.status == TrackStatus.confirmed:
             self.current_feature = detection.feature
 
 
