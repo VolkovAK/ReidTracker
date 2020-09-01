@@ -42,6 +42,7 @@ class Track():
         self.features[0] = detection.feature
         self.available_features = 1
         self.max_features = max_features
+        self.current_feature = detection.feature
 
         self.track_id = -1  # Номер трэка, получаемый после взросления (status == confirmed)
 
@@ -114,6 +115,8 @@ class Track():
         if self.status == TrackStatus.tentative:
             self.features[self.available_features] = detection.feature
             self.available_features += 1
+	if self.status == TrackStatus.confirmed:
+           self.current_feature = detection.feature
 
 
         # update history
